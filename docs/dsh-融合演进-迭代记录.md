@@ -33,7 +33,7 @@ Commit distribution (by top-level path): tui 457, guard 70, fs 13, session 10, e
 
 ### Architectural position
 
-The TUI layer of `dsh --profile`; the bundle patch rides on top of dsh-base (stable plugin id `tui-runner`); the rendering core is ported from the Tianshu terminal engine (Apache-2.0, per-file provenance in SOURCE-MAP). **A pure presentation layer**: all state arrives through session events and the projection bus, it invents no new event types and contains no agent logic, honoring "Model-visible ⟺ logged". Layering: `src/engine/` (the ported terminal rendering engine), `src/ui/app.ts` (TuiApp assembly), `src/adapter/` (adapting dsh services to `TuiPort`).
+The TUI layer of `tianshu --profile`; the bundle patch rides on top of dsh-base (stable plugin id `tui-runner`); the rendering core is ported from the Tianshu terminal engine (Apache-2.0, per-file provenance in SOURCE-MAP). **A pure presentation layer**: all state arrives through session events and the projection bus, it invents no new event types and contains no agent logic, honoring "Model-visible ⟺ logged". Layering: `src/engine/` (the ported terminal rendering engine), `src/ui/app.ts` (TuiApp assembly), `src/adapter/` (adapting dsh services to `TuiPort`).
 
 ### Filling the interaction plane (a baseline gap)
 

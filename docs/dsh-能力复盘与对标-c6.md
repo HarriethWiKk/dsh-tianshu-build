@@ -94,7 +94,7 @@ Features present in grok's crate (file-name evidence + C2 index; not re-read per
 | `mcp_cmd.rs` | `/mcp` | ✅ covered |
 | `git_info.rs` — repo info | top-bar cwd/branch | ✅ mostly covered |
 | `fs_size.rs` / `disk_usage_cmd/` — disk usage | none | **open** (low) |
-| `headless.rs` — headless run | `dsh run` | ✅ covered |
+| `headless.rs` — headless run | `tianshu run` | ✅ covered |
 | `hyperlink_route.rs` — OSC-8 hyperlinks | none | **open** (low, cosmetic) |
 | `inline_media_ffmpeg.rs` — inline media (ffmpeg frames) | `image-tool`/`term-image`/`image-attach` (kitty/ANSI graphics) | ⚠️ different approaches — DSH renders images natively in terminal; grok extracts video frames |
 | `config_toml_edit.rs` — TOML config editing | `/config` panel (settings/permission/credentials) | ⚠️ different shape — DSH panel vs grok TOML file editing |

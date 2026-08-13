@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/dsh-能力复盘与对标-c6.md
-dsh-能力复盘与对标-c6.md: 0fa86f780f56aaab9462def4454159b6df095824
-dsh-能力复盘与对标-c6.zh.md: 86c21d6a69df0794a431e8e6c2e67b17bd49c823
+dsh-能力复盘与对标-c6.md: 1e5f05efdc12634c11b3d96365b709ef5793908c
+dsh-能力复盘与对标-c6.zh.md: a517e02a7a7bfa6e62fe972c186bf9981abc8860
