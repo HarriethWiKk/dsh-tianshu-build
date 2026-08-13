@@ -6,11 +6,11 @@ English | [中文](dsh-tui-与grok的功能对比-c2.zh.md)
 
 ## 1. The local grok-build repository
 
-**Path**: `/Users/banxia/app/deepseek-tui/grok-build` **Remote**: https://github.com/xai-org/grok-build **Local version**: `b13fa52 Synced from monorepo` (pulled 2026-08-11)
+**Path**: `~/checkouts/grok-build` **Remote**: https://github.com/xai-org/grok-build **Local version**: `b13fa52 Synced from monorepo` (pulled 2026-08-11)
 
 To update:
 ```sh
-cd /Users/banxia/app/deepseek-tui/grok-build
+cd ~/checkouts/grok-build
 git pull --ff-only origin main
 ```
 

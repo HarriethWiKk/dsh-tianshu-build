@@ -6,7 +6,7 @@ English | [中文](dsh-能力复盘与对标-c6.zh.md)
 >
 > **Date**: 2026-08-12
 >
-> **Scope**: DSH current capability (harness + TUI) versus Claude Code (official 64 slash commands) and grok-build (`xai-grok-pager` crate, local checkout `/Users/banxia/app/deepseek-tui/grok-build`, Rust/ratatui/crossterm, ACP transport). This document is the merged, up-to-date picture — new items since C5 are marked **NEW**; completed items are struck through with their commit.
+> **Scope**: DSH current capability (harness + TUI) versus Claude Code (official 64 slash commands) and grok-build (`xai-grok-pager` crate, local checkout `~/checkouts/grok-build`, Rust/ratatui/crossterm, ACP transport). This document is the merged, up-to-date picture — new items since C5 are marked **NEW**; completed items are struck through with their commit.
 
 ## 1. DSH current capability summary
 

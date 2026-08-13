@@ -2,7 +2,7 @@
 
 English | [中文](dsh-tui-视觉概念稿-c4.zh.md)
 
-> **Tag**: C4（DSH TUI 系列第 4 篇；C1 对比 Claude Code、C2 对比 grok-build、C3 增强方案、next-phase 功能演进） **Date**: 2026-08-12 **目的**: 面向用户可见部分（首屏欢迎页、输入框、主界面布局、状态区）产出 3 个概念设计方案，供选型。 **参考实现**: grok-build `crates/codegen/xai-grok-pager`（本地 `/Users/banxia/app/deepseek-tui/grok-build`，版本 b13fa52）、claude-code-haha（本地 `/Users/banxia/app/opencode/claude-code-haha`，Claude Code CLI 的 React/Ink 重实现）。 **状态**: 概念设计文档，未实施。所有对参考项目的描述为源码阅读结论（未运行验证）；对本仓库的描述基于当前工作树。
+> **Tag**: C4（DSH TUI 系列第 4 篇；C1 对比 Claude Code、C2 对比 grok-build、C3 增强方案、next-phase 功能演进） **Date**: 2026-08-12 **目的**: 面向用户可见部分（首屏欢迎页、输入框、主界面布局、状态区）产出 3 个概念设计方案，供选型。 **参考实现**: grok-build `crates/codegen/xai-grok-pager`（本地 `~/checkouts/grok-build`，版本 b13fa52）、claude-code-haha（本地 `~/checkouts/claude-code-haha`，Claude Code CLI 的 React/Ink 重实现）。 **状态**: 概念设计文档，未实施。所有对参考项目的描述为源码阅读结论（未运行验证）；对本仓库的描述基于当前工作树。
 
 ## 0. 设计约束（从现状继承）
 

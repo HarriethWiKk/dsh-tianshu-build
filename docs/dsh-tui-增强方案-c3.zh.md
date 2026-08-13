@@ -413,7 +413,7 @@ DSH 没有 session 级「全批准」。需新建（最小方案）：
 
 ### 天枢 TUI（rewind 搬运源）
 
-路径：`/Users/banxia/app/deepseek-tui/opencode-tui`
+路径：`~/checkouts/opencode-tui`
 
 | 功能 | 天枢文件 | 说明 |
 |---|---|---|
@@ -428,7 +428,7 @@ DSH 没有 session 级「全批准」。需新建（最小方案）：
 
 ### grok-build（设计参照）
 
-路径：`/Users/banxia/app/deepseek-tui/grok-build`（版本 `b13fa52`，2026-08-11 拉取）
+路径：`~/checkouts/grok-build`（版本 `b13fa52`，2026-08-11 拉取）
 
 | 功能 | grok 文件 | 说明 |
 |---|---|---|

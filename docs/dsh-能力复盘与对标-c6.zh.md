@@ -6,7 +6,7 @@
 >
 > **日期**: 2026-08-12
 >
-> **范围**: DSH 当前能力（harness + TUI）对标 Claude Code（官方 64 个斜杠命令）与 grok-build（`xai-grok-pager` crate，本地 checkout `/Users/banxia/app/deepseek-tui/grok-build`，Rust/ratatui/crossterm，ACP 传输）。本文档为合并后的最新图景——C5 之后的新项标注 **NEW**，已完成项划除并附提交。
+> **范围**: DSH 当前能力（harness + TUI）对标 Claude Code（官方 64 个斜杠命令）与 grok-build（`xai-grok-pager` crate，本地 checkout `~/checkouts/grok-build`，Rust/ratatui/crossterm，ACP 传输）。本文档为合并后的最新图景——C5 之后的新项标注 **NEW**，已完成项划除并附提交。
 
 ## 1. DSH 当前能力总览
 

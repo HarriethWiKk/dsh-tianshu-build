@@ -6,11 +6,11 @@
 
 ## 一、grok-build 本地仓库
 
-**路径**：`/Users/banxia/app/deepseek-tui/grok-build` **远程**：https://github.com/xai-org/grok-build **本地版本**：`b13fa52 Synced from monorepo`（2026-08-11 拉取）
+**路径**：`~/checkouts/grok-build` **远程**：https://github.com/xai-org/grok-build **本地版本**：`b13fa52 Synced from monorepo`（2026-08-11 拉取）
 
 更新方式：
 ```sh
-cd /Users/banxia/app/deepseek-tui/grok-build
+cd ~/checkouts/grok-build
 git pull --ff-only origin main
 ```
 

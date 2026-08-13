@@ -413,7 +413,7 @@ This revision is based on a lightweight parallel read-only diagnosis (4 code_sco
 
 ### Tianshu TUI (rewind port source)
 
-Path: `/Users/banxia/app/deepseek-tui/opencode-tui`
+Path: `~/checkouts/opencode-tui`
 
 | Feature | Tianshu file | Notes |
 |---|---|---|
@@ -428,7 +428,7 @@ Path: `/Users/banxia/app/deepseek-tui/opencode-tui`
 
 ### grok-build (design reference)
 
-Path: `/Users/banxia/app/deepseek-tui/grok-build` (version `b13fa52`, pulled 2026-08-11)
+Path: `~/checkouts/grok-build` (version `b13fa52`, pulled 2026-08-11)
 
 | Feature | grok file | Notes |
 |---|---|---|
