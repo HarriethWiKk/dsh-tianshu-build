@@ -18,7 +18,7 @@
 
 | 维度 | Claude Code 设计决策 | DSH 现状 | 判定 |
 |---|---|---|---|
-| plan mode | 权限档之一:编辑硬阻断、只读探索、研究委托 Plan 子代理、ExitPlanMode 审批 | 正交软约束:session log 记状态、prompt 段落劝导、工具零硬禁、plan-review intent 审批 | 落后(约束硬度) |
+| plan mode | 权限档之一:编辑硬阻断、只读探索、研究委托 Plan 子代理、ExitPlanMode 审批 | 单调守卫执行层硬阻断变更工具族(C7-1 已落地)+ plan-review intent 审批 + 计划文件落盘 | 已对齐(约束硬度);子代理角色见 C7-5 |
 | subagents | 用户可写的 markdown 角色定义 + description 驱动自动委派 + 内置只读 Explore/Plan + 回传安全扫描 | 7 provider 执行面(spawn/fork/inprocess/acp/claude-code/codex/dsh-sdk)+ 后台持久 + 跨 agent 消息 | 互有胜负:执行面超越,角色定义面缺失 |
 | hooks | 声明式 shell hook:31 事件、5 种 handler、全 JSON 协议(updatedInput/systemMessage/continue)、多层 settings 合并热加载 | CC 兼容子集:7 事件、command only、协议子集、进程级一次读 | 落后(协议与发现面) |
 | skills | 渐进披露 + allowed-tools 预批准 + context:fork + compaction 后重附 | 渐进披露 + 多级发现 + `/name` 手势 | 持平 |
@@ -32,9 +32,9 @@
 
 Claude Code:plan 是权限档而非功能开关(Shift+Tab 循环、`/plan` 前缀、`--permission-mode plan` 三种进入方式);编辑一律阻断至批准(bypass 会话除外);`useAutoModeDuringPlan` 默认开,shell 命令交 classifier 审批;批准 UI 三选项(批准并切 auto / 批准并逐条审批 / 继续 planning);子代理默认被剥掉 EnterPlanMode。(https://code.claude.com/docs/en/permission-modes)
 
-DSH:plan mode 自述 "independent of sandbox mode and approval policy"(`packages/plan/plan-mode/src/index.ts:5-7`);只读约束仅靠 `plan:policy` system prompt 段落(index.ts:224-232);plan 是 `exit_plan_mode` 工具的字符串参数,无计划文件;审批走 `plan-review` intent(index.ts:331-347)。
+DSH:plan mode 自述 "independent of sandbox mode and approval policy"(`packages/plan/plan-mode/src/index.ts:5-7`);审批走 `plan-review` intent(index.ts:331-347)。
 
-差距:Claude Code 把只读放在执行层硬强制,DSH 放在提示层劝导——模型走神或注入即可越过。
+差距(已闭环):Claude Code 把只读放在执行层硬强制,DSH 曾放在提示层劝导。**C7-1 已落地**:单调 `ctx.tools.guard` 守卫在执行层拒绝变更工具族(write/edit/str_replace_editor 变异子命令/git_commit/terminal_*),bash/pwsh 按 CC 同语义放行;`exit_plan_mode` 调用即把计划写到 `$DSH_HOME/plans/…` 并追加 log-only `plan/file` 事件(见 plan-mode README 与 Agent Note 2026-08-16-plan-mode-hard-readonly-and-plan-file)。
 
 ### 3.2 subagents
 
@@ -84,7 +84,7 @@ DSH:OS 级沙箱三档(read-only/workspace-write/danger-full-access,Seatbelt/bwr
 
 | # | 项 | Claude Code 机制要点 | DSH 落点 | 成本 |
 |---|---|---|---|---|
-| C7-1 | plan mode 硬只读 + 计划文件 | 编辑阻断在工具层;计划落盘可复阅 | plan/mode 状态接入 fs/bash 写路径守卫(复用 sandbox read-only 接缝);计划存 session artifact | 中 |
+| C7-1 | plan mode 硬只读 + 计划文件 | 编辑阻断在工具层;计划落盘可复阅 | ✅ 已落地:plan-mode 单调守卫(拒绝 write/edit/git_commit/terminal_*,str_replace_editor 按子命令判别,bash 放行,blockedTools 可加严)+ `$DSH_HOME/plans/…` 落盘 + log-only `plan/file` 事件 | 中 |
 | C7-2 | hooks 协议补齐 | updatedInput 生效、systemMessage 透出 | hook-protocol codec + hooks-claude 桥 | 中 |
 | C7-3 | 权限规则持久化(深化 C6 H2) | Tool(specifier) 语法、deny→ask→allow 求值、批准写回 settings.local.json | interaction/user-approval + settings 分层 | 中高 |
 | C7-4 | hooks 项目级发现 + 事件扩充 | 项目 settings 合并热加载;Notification/SessionEnd/PreCompact | hooks-claude 配置面 + session 生命周期事件点 | 中 |

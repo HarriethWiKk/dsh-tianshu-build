@@ -18,7 +18,7 @@ Drift signals (comparisons must follow the current pages; earlier secondary sour
 
 | Dimension | Claude Code design decision | DSH current state | Verdict |
 |---|---|---|---|
-| plan mode | A permission mode: edits hard-blocked, read-only exploration, research delegated to the Plan subagent, ExitPlanMode approval | An orthogonal soft constraint: state on the session log, guidance via prompt section, zero tool hard-blocks, plan-review intent approval | Behind (constraint hardness) |
+| plan mode | A permission mode: edits hard-blocked, read-only exploration, research delegated to the Plan subagent, ExitPlanMode approval | Monotonic guard hard-blocks the mutation families at execution (C7-1 landed) + plan-review intent approval + persisted plan file | Aligned (constraint hardness); subagent roles tracked in C7-5 |
 | subagents | User-authored markdown role definitions + description-driven auto-delegation + built-in read-only Explore/Plan + safety scan of returned reports | 7-provider execution surface (spawn/fork/inprocess/acp/claude-code/codex/dsh-sdk) + durable background children + cross-agent messaging | Mixed: execution surface ahead, role-definition surface missing |
 | hooks | Declarative shell hooks: 31 events, 5 handler kinds, full JSON protocol (updatedInput/systemMessage/continue), layered settings merge with hot reload | CC-compatible subset: 7 events, command-only, protocol subset, process-level one-shot load | Behind (protocol and discovery coverage) |
 | skills | Progressive disclosure + allowed-tools pre-approval + context:fork + re-attach after compaction | Progressive disclosure + multi-level discovery + `/name` gesture | Parity |
@@ -32,9 +32,9 @@ Drift signals (comparisons must follow the current pages; earlier secondary sour
 
 Claude Code: plan is a permission mode, not a feature toggle (three entries: Shift+Tab cycle, `/plan` prompt prefix, `--permission-mode plan`); edits are blocked until approval (bypass sessions excepted); `useAutoModeDuringPlan` defaults on, routing shell commands through a classifier; the approval UI offers three choices (approve and switch to auto / approve with per-action review / keep planning); subagents have EnterPlanMode stripped by default. (https://code.claude.com/docs/en/permission-modes)
 
-DSH: plan mode states it is "independent of sandbox mode and approval policy" (`packages/plan/plan-mode/src/index.ts:5-7`); read-only behavior rests on the `plan:policy` system-prompt section alone (index.ts:224-232); the plan is a string argument of `exit_plan_mode` — no plan file; approval flows through the `plan-review` intent (index.ts:331-347).
+DSH: plan mode states it is "independent of sandbox mode and approval policy" (`packages/plan/plan-mode/src/index.ts:5-7`); approval flows through the `plan-review` intent (index.ts:331-347).
 
-Gap: Claude Code enforces read-only in the execution layer; DSH advises it in the prompt layer — a distracted or injected model walks past it.
+Gap (closed): Claude Code enforces read-only in the execution layer; DSH used to advise it in the prompt layer. **C7-1 has landed**: a monotonic `ctx.tools.guard` denies the mutation families at execution (write/edit/str_replace_editor mutating commands/git_commit/terminal_*; bash/pwsh stay allowed per CC semantics), and every `exit_plan_mode` call persists the plan under `$DSH_HOME/plans/…` with a log-only `plan/file` event (see the plan-mode README and Agent Note 2026-08-16-plan-mode-hard-readonly-and-plan-file).
 
 ### 3.2 subagents
 
@@ -84,7 +84,7 @@ DSH: an OS-level sandbox tri-mode (read-only/workspace-write/danger-full-access,
 
 | # | Item | Claude Code mechanism essence | DSH landing spot | Cost |
 |---|---|---|---|---|
-| C7-1 | Hard read-only plan mode + plan file | Edit blocking at the tool layer; plan persisted for review | Wire plan/mode state into the fs/bash write-path guards (reuse the sandbox read-only seam); store the plan as a session artifact | Medium |
+| C7-1 | Hard read-only plan mode + plan file | Edit blocking at the tool layer; plan persisted for review | ✅ Landed: monotonic plan-mode guard (denies write/edit/git_commit/terminal_*, str_replace_editor discriminated by subcommand, bash allowed, `blockedTools` to extend) + `$DSH_HOME/plans/…` persistence + log-only `plan/file` event | Medium |
 | C7-2 | Hook protocol completion | Make updatedInput effective; surface systemMessage | hook-protocol codec + the hooks-claude bridge | Medium |
 | C7-3 | Permission rule persistence (deepens C6 H2) | Tool(specifier) syntax, deny→ask→allow evaluation, approvals written back to settings.local.json | interaction/user-approval + the settings layers | Medium-high |
 | C7-4 | Project-level hook discovery + more events | Project settings merge with hot reload; Notification/SessionEnd/PreCompact | hooks-claude config surface + session lifecycle event points | Medium |
