@@ -46,7 +46,7 @@ DSH: the execution surface is well ahead — 7 providers, fork inheriting a pare
 
 Claude Code: 31 event points in three cadences (per session / per turn / per tool call); five handler kinds (command/http/mcp_tool/prompt/agent); exit 2 is the only JSON-insurmountable block; `hookSpecificOutput.permissionDecision` (allow/deny/ask/defer) + `updatedInput` wholesale input replacement + `additionalContext` injection; `~/.claude/settings.json` and project `.claude/settings.json` merge across layers with a hot-reload watcher, and deny cannot be overridden by allow across layers; hooks can only tighten, never loosen — command hooks run with the user's full permissions and no sandbox, and no hook executes in an interactive session before workspace trust is accepted. (https://code.claude.com/docs/en/hooks)
 
-DSH: the `hooks-claude` bridge runs unmodified Claude Code command hooks — 7 events (`packages/hooks/hooks-claude/src/config.ts:11-19`), exit-2 block, `additionalContext` injection, and Stop-deny-to-steer are all aligned; but `updatedInput` only warns without taking effect, `systemMessage` is not surfaced, project-level per-session config discovery is a TODO, and configuration is read once at load time, process-wide.
+DSH: the `hooks-claude` bridge runs unmodified Claude Code command hooks — 7 events (`packages/hooks/hooks-claude/src/config.ts:11-19`), exit-2 block, `additionalContext` injection, and Stop-deny-to-steer are all aligned; `systemMessage` now rides the durable `hook/result` event and is surfaced by clients (muted `[hook]` line in the TUI — first half of C7-2 landed); `updatedInput` remains parsed-but-not-honored, project-level per-session config discovery is a TODO, and configuration is read once at load time, process-wide.
 
 Verdict: the backbone is deliberately homologous (CC-ecosystem compatibility is the right call); the gap is protocol coverage and config discovery.
 
@@ -85,7 +85,7 @@ DSH: an OS-level sandbox tri-mode (read-only/workspace-write/danger-full-access,
 | # | Item | Claude Code mechanism essence | DSH landing spot | Cost |
 |---|---|---|---|---|
 | C7-1 | Hard read-only plan mode + plan file | Edit blocking at the tool layer; plan persisted for review | ✅ Landed: monotonic plan-mode guard (denies write/edit/git_commit/terminal_*, str_replace_editor discriminated by subcommand, bash allowed, `blockedTools` to extend) + `$DSH_HOME/plans/…` persistence + log-only `plan/file` event | Medium |
-| C7-2 | Hook protocol completion | Make updatedInput effective; surface systemMessage | hook-protocol codec + the hooks-claude bridge | Medium |
+| C7-2 | Hook protocol completion | Make updatedInput effective; surface systemMessage | Half landed: systemMessage rides `hook/result` and is surfaced (both bridges + TUI); updatedInput awaits the pre-identity rewrite transaction (proposed note on file) | Medium |
 | C7-3 | Permission rule persistence (deepens C6 H2) | Tool(specifier) syntax, deny→ask→allow evaluation, approvals written back to settings.local.json | interaction/user-approval + the settings layers | Medium-high |
 | C7-4 | Project-level hook discovery + more events | Project settings merge with hot reload; Notification/SessionEnd/PreCompact | hooks-claude config surface + session lifecycle event points | Medium |
 | C7-5 | Role-based subagent definition surface | Markdown agents + description-driven delegation routing + a built-in read-only explore | subagent service + tool-subagent; discovery can mirror the skill surface | High |

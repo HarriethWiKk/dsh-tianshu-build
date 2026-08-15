@@ -46,7 +46,7 @@ DSH:执行面远超——7 provider、fork 继承父会话前缀、后台持久 
 
 Claude Code:31 个事件点分三种节奏(每会话/每轮/每次工具调用);handler 五种(command/http/mcp_tool/prompt/agent);exit 2 是唯一 JSON 无法推翻的阻塞;`hookSpecificOutput.permissionDecision`(allow/deny/ask/defer)+ `updatedInput` 整体替换入参 + `additionalContext` 注入;`~/.claude/settings.json` 与项目 `.claude/settings.json` 等多层合并、watcher 热加载、deny 跨层不可被 allow 推翻;hook 只能收紧不能放松,command hook 以用户全权限跑、无沙箱,交互会话在 workspace trust 接受前不执行任何 hook。(https://code.claude.com/docs/en/hooks)
 
-DSH:`hooks-claude` 桥跑未修改的 Claude Code command hook——7 事件(`packages/hooks/hooks-claude/src/config.ts:11-19`)、exit-2 block、`additionalContext` 注入、Stop deny 转 steer 强制继续都已对齐;但 `updatedInput` 只警告不生效、`systemMessage` 不透出、项目级 per-session 配置发现是 TODO、进程级加载时一次读。
+DSH:`hooks-claude` 桥跑未修改的 Claude Code command hook——7 事件(`packages/hooks/hooks-claude/src/config.ts:11-19`)、exit-2 block、`additionalContext` 注入、Stop deny 转 steer 强制继续都已对齐;`systemMessage` 已随 `hook/result` 事件落账并由客户端透出(TUI 暗色 `[hook]` 行,C7-2 前半落地);`updatedInput` 仍只解析不生效、项目级 per-session 配置发现是 TODO、进程级加载时一次读。
 
 判定:主干设计同源(兼容 CC 生态是正确决策),差距在协议覆盖度与配置发现面。
 
@@ -85,7 +85,7 @@ DSH:OS 级沙箱三档(read-only/workspace-write/danger-full-access,Seatbelt/bwr
 | # | 项 | Claude Code 机制要点 | DSH 落点 | 成本 |
 |---|---|---|---|---|
 | C7-1 | plan mode 硬只读 + 计划文件 | 编辑阻断在工具层;计划落盘可复阅 | ✅ 已落地:plan-mode 单调守卫(拒绝 write/edit/git_commit/terminal_*,str_replace_editor 按子命令判别,bash 放行,blockedTools 可加严)+ `$DSH_HOME/plans/…` 落盘 + log-only `plan/file` 事件 | 中 |
-| C7-2 | hooks 协议补齐 | updatedInput 生效、systemMessage 透出 | hook-protocol codec + hooks-claude 桥 | 中 |
+| C7-2 | hooks 协议补齐 | updatedInput 生效、systemMessage 透出 | 半落地:systemMessage 已随 `hook/result` 落账并透出(双语桥+TUI);updatedInput 待 pre-identity 改写事务(proposed 笔记在案) | 中 |
 | C7-3 | 权限规则持久化(深化 C6 H2) | Tool(specifier) 语法、deny→ask→allow 求值、批准写回 settings.local.json | interaction/user-approval + settings 分层 | 中高 |
 | C7-4 | hooks 项目级发现 + 事件扩充 | 项目 settings 合并热加载;Notification/SessionEnd/PreCompact | hooks-claude 配置面 + session 生命周期事件点 | 中 |
 | C7-5 | 角色化子代理定义面 | markdown agent + description 委派路由 + 内置只读 explore | subagent 服务 + tool-subagent;发现面可与 skill 同构 | 高 |

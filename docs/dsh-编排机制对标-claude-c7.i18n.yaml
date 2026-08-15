@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/dsh-编排机制对标-claude-c7.md
-dsh-编排机制对标-claude-c7.md: cb89fb1efe8413d2fbe0ed8996eed1458a34caca
-dsh-编排机制对标-claude-c7.zh.md: 15e1f1345e176c5f9959e3b9c2b2c8dfb6c1126a
+dsh-编排机制对标-claude-c7.md: e614dedb51b32831b621a70ac2529cbc68600cc7
+dsh-编排机制对标-claude-c7.zh.md: b4a6753d695ddd0962af041ea4afdee9a513a15a
