@@ -20,7 +20,7 @@
 |---|---|---|---|
 | plan mode | 权限档之一:编辑硬阻断、只读探索、研究委托 Plan 子代理、ExitPlanMode 审批 | 单调守卫执行层硬阻断变更工具族(C7-1 已落地)+ plan-review intent 审批 + 计划文件落盘 | 已对齐(约束硬度);子代理角色见 C7-5 |
 | subagents | 用户可写的 markdown 角色定义 + description 驱动自动委派 + 内置只读 Explore/Plan + 回传安全扫描 | 7 provider 执行面(spawn/fork/inprocess/acp/claude-code/codex/dsh-sdk)+ 后台持久 + 跨 agent 消息 | 互有胜负:执行面超越,角色定义面缺失 |
-| hooks | 声明式 shell hook:31 事件、5 种 handler、全 JSON 协议(updatedInput/systemMessage/continue)、多层 settings 合并热加载 | CC 兼容子集:7 事件、command only、协议子集、进程级一次读 | 落后(协议与发现面) |
+| hooks | 声明式 shell hook:31 事件、5 种 handler、全 JSON 协议(updatedInput/systemMessage/continue)、多层 settings 合并热加载 | CC 兼容:7 事件、command only;updatedInput 经 pre-commit 相位生效、systemMessage 透出(C7-2 已落地);进程级一次读 | 落后(协议与发现面) |
 | skills | 渐进披露 + allowed-tools 预批准 + context:fork + compaction 后重附 | 渐进披露 + 多级发现 + `/name` 手势 | 持平 |
 | slash commands | 已并入 skills:markdown 命令与 SKILL.md 等价,同名 skill 优先 | 27 内置 + 双注册表 + skill `/name` 手势 | 持平(CC 的合并证伪了独立 markdown 命令差距) |
 | 记忆 | 四级 CLAUDE.md 拼接 + @import 4 跳 + auto memory 默认开(索引限额加载) | walk-up AGENTS.md 层级 + 嵌套投影 + 自动记忆(子串检索) | 持平偏前 |
@@ -46,7 +46,7 @@ DSH:执行面远超——7 provider、fork 继承父会话前缀、后台持久 
 
 Claude Code:31 个事件点分三种节奏(每会话/每轮/每次工具调用);handler 五种(command/http/mcp_tool/prompt/agent);exit 2 是唯一 JSON 无法推翻的阻塞;`hookSpecificOutput.permissionDecision`(allow/deny/ask/defer)+ `updatedInput` 整体替换入参 + `additionalContext` 注入;`~/.claude/settings.json` 与项目 `.claude/settings.json` 等多层合并、watcher 热加载、deny 跨层不可被 allow 推翻;hook 只能收紧不能放松,command hook 以用户全权限跑、无沙箱,交互会话在 workspace trust 接受前不执行任何 hook。(https://code.claude.com/docs/en/hooks)
 
-DSH:`hooks-claude` 桥跑未修改的 Claude Code command hook——7 事件(`packages/hooks/hooks-claude/src/config.ts:11-19`)、exit-2 block、`additionalContext` 注入、Stop deny 转 steer 强制继续都已对齐;`systemMessage` 已随 `hook/result` 事件落账并由客户端透出(TUI 暗色 `[hook]` 行,C7-2 前半落地);`updatedInput` 仍只解析不生效、项目级 per-session 配置发现是 TODO、进程级加载时一次读。
+DSH:`hooks-claude` 桥跑未修改的 Claude Code command hook——7 事件(`packages/hooks/hooks-claude/src/config.ts:11-19`)、exit-2 block、`additionalContext` 注入、Stop deny 转 steer 强制继续都已对齐;`systemMessage` 已随 `hook/result` 事件落账并由客户端透出(TUI 暗色 `[hook]` 行,C7-2 前半落地);`updatedInput` 已生效(loop pre-commit 相位,审计双记 originalArguments)、`systemMessage` 已透出;项目级 per-session 配置发现是 TODO、进程级加载时一次读。
 
 判定:主干设计同源(兼容 CC 生态是正确决策),差距在协议覆盖度与配置发现面。
 
@@ -85,7 +85,7 @@ DSH:OS 级沙箱三档(read-only/workspace-write/danger-full-access,Seatbelt/bwr
 | # | 项 | Claude Code 机制要点 | DSH 落点 | 成本 |
 |---|---|---|---|---|
 | C7-1 | plan mode 硬只读 + 计划文件 | 编辑阻断在工具层;计划落盘可复阅 | ✅ 已落地:plan-mode 单调守卫(拒绝 write/edit/git_commit/terminal_*,str_replace_editor 按子命令判别,bash 放行,blockedTools 可加严)+ `$DSH_HOME/plans/…` 落盘 + log-only `plan/file` 事件 | 中 |
-| C7-2 | hooks 协议补齐 | updatedInput 生效、systemMessage 透出 | 半落地:systemMessage 已随 `hook/result` 落账并透出(双语桥+TUI);updatedInput 待 pre-identity 改写事务(proposed 笔记在案) | 中 |
+| C7-2 | hooks 协议补齐 | updatedInput 生效、systemMessage 透出 | ✅ 已落地:systemMessage 随 `hook/result` 透出;updatedInput 经新 `agent/pre-tool-commit` 相位生效(单发备忘回放,工具目录/历史/审计/执行一致,审计双记 originalArguments) | 中 |
 | C7-3 | 权限规则持久化(深化 C6 H2) | Tool(specifier) 语法、deny→ask→allow 求值、批准写回 settings.local.json | interaction/user-approval + settings 分层 | 中高 |
 | C7-4 | hooks 项目级发现 + 事件扩充 | 项目 settings 合并热加载;Notification/SessionEnd/PreCompact | hooks-claude 配置面 + session 生命周期事件点 | 中 |
 | C7-5 | 角色化子代理定义面 | markdown agent + description 委派路由 + 内置只读 explore | subagent 服务 + tool-subagent;发现面可与 skill 同构 | 高 |
