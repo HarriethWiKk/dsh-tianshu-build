@@ -33,7 +33,7 @@
 
 ### 架构定位
 
-`tianshu --profile` 的 TUI 层，bundle patch 骑在 dsh-base 之上（稳定插件 id `tui-runner`）；渲染核心移植自天枢 Tianshu 终端引擎（Apache-2.0，逐文件溯源见 SOURCE-MAP）。**纯展示层**：所有状态经 session 事件与投影总线到达，不发明新事件类型、不含 agent 逻辑，遵守 "Model-visible ⟺ logged"。分层：`src/engine/`（终端渲染引擎移植层）、`src/ui/app.ts`（TuiApp 装配）、`src/adapter/`（dsh 服务到 `TuiPort` 的适配）。
+`oh-my-tianshu --profile` 的 TUI 层，bundle patch 骑在 dsh-base 之上（稳定插件 id `tui-runner`）；渲染核心移植自天枢 Tianshu 终端引擎（Apache-2.0，逐文件溯源见 SOURCE-MAP）。**纯展示层**：所有状态经 session 事件与投影总线到达，不发明新事件类型、不含 agent 逻辑，遵守 "Model-visible ⟺ logged"。分层：`src/engine/`（终端渲染引擎移植层）、`src/ui/app.ts`（TuiApp 装配）、`src/adapter/`（dsh 服务到 `TuiPort` 的适配）。
 
 ### 交互平面补齐（基线缺口）
 

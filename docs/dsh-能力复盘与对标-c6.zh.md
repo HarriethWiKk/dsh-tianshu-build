@@ -94,7 +94,7 @@ grok crate 中存在的特性（文件名证据 + C2 索引；未逐文件重读
 | `mcp_cmd.rs` | `/mcp` | ✅ 覆盖 |
 | `git_info.rs` — 仓库信息 | 顶部栏 cwd/branch | ✅ 基本覆盖 |
 | `fs_size.rs` / `disk_usage_cmd/` — 磁盘用量 | 无 | **未做**（低） |
-| `headless.rs` — 无头运行 | `tianshu run` | ✅ 覆盖 |
+| `headless.rs` — 无头运行 | `oh-my-tianshu run` | ✅ 覆盖 |
 | `hyperlink_route.rs` — OSC-8 超链接 | 无 | **未做**（低，外观） |
 | `inline_media_ffmpeg.rs` — 内联媒体（ffmpeg 帧） | `image-tool`/`term-image`/`image-attach`（kitty/ANSI 图形） | ⚠️ 路径不同——DSH 原生终端图像；grok 提取视频帧 |
 | `config_toml_edit.rs` — TOML 配置编辑 | `/config` 面板（settings/permission/credentials） | ⚠️ 形态不同——DSH 面板 vs grok TOML 文件编辑 |

@@ -29,16 +29,16 @@
 ## 改动 3:命名统一(命令 + npm 包)
 
 仓库名已是 `oh-my-tianshu`(remote 实证)。统一为:
-- **bin 命令**:`tianshu` → `oh-my-tianshu`(`apps/cli/package.json` bin 字段)
-- **npm 包名**:`@huiliyi37/dsh-tianshu` → `@huiliyi37/oh-my-tianshu`
-- 同步:根 package.json scripts(`tianshu` → `oh-my-tianshu`)、README/文档中的命令与包名、args.ts 的 help 文案
-- 旧包 `@huiliyi37/dsh-tianshu` 后续 npm deprecate(发布时执行)
+- **bin 命令**:`oh-my-tianshu` → `oh-my-tianshu`(`apps/cli/package.json` bin 字段)
+- **npm 包名**:`@huiliyi37/oh-my-tianshu` → `@huiliyi37/oh-my-tianshu`
+- 同步:根 package.json scripts(`oh-my-tianshu` → `oh-my-tianshu`)、README/文档中的命令与包名、args.ts 的 help 文案
+- 旧包 `@huiliyi37/oh-my-tianshu` 后续 npm deprecate(发布时执行)
 
 ## 改动 4:本机落地
 
-- 执行 `migrate-home`(或手动),把当前 `~/.dsh`(已被 tianshu 接管)迁到 `~/.dsh-tianshu`
+- 执行 `migrate-home`(或手动),把当前 `~/.dsh`(已被 oh-my-tianshu 接管)迁到 `~/.dsh-tianshu`
 - 恢复官方 `tui` profile:`npx -y @deepseek-ai/dsh plugin --profile tui add @huiliyi37/dsh-tianshu-tui`
-- 验证:`tianshu tui`(旧)与 `DSH_HOME=~/.dsh-tianshu oh-my-tianshu tui` 各走各的
+- 验证:`oh-my-tianshu tui`(旧)与 `DSH_HOME=~/.dsh-tianshu oh-my-tianshu tui` 各走各的
 
 ## 顺序与验证
 
