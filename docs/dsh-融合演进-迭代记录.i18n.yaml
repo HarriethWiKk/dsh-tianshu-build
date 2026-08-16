@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/dsh-融合演进-迭代记录.md
-dsh-融合演进-迭代记录.md: 219ce126702e47a0ddede12a2ea70d6543435903
-dsh-融合演进-迭代记录.zh.md: 56ceea89d36ffb127a5286c660f45dff5dae5fa1
+dsh-融合演进-迭代记录.md: 0b2505367d47557f3519974a4ec1525595a2c339
+dsh-融合演进-迭代记录.zh.md: d9adcce1541dc68dbc3525e6abae2657803cf9f0
