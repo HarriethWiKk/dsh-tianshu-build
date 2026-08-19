@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write docs/dsh-与claude的对比-c5.md
-dsh-与claude的对比-c5.md: f4a94461b57358394d08496f951a46ca2399be6c
-dsh-与claude的对比-c5.zh.md: 4ff22e9752ff8787057d5ad853b209b29d5ee3b1

@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write docs/dsh-编排机制对标-claude-c7.md
-dsh-编排机制对标-claude-c7.md: 259e84512ede817d7b1d916bbb610201c446eae0
-dsh-编排机制对标-claude-c7.zh.md: 24700c410cc9a49a3e45d138ecbec6201e7a5009
